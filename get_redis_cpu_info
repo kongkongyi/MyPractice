@@ -1,0 +1,19 @@
+#!/usr/local/bin/python3
+# -*- coding:utf-8 -*-
+
+import subprocess
+import time
+
+if __name__=='__main__':
+        while True:
+                cmd = '/usr/local/bin/redis-cli -h 127.0.0.1 -p 6379 info cpu 2>/dev/null | grep -v children'
+                p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+                output= p.communicate()[0].decode('utf8').split()
+
+                data_time = time.strftime("%Y%m%d %H:%M:%S", time.localtime())
+                str1 = data_time + ' ' + output[3] + ' ' + output[2] + '\n'
+
+                with open('/home/heizi/dump/get_cpu_info','a') as f:
+                        f.write(str1)
+
+                time.sleep(0.5)
